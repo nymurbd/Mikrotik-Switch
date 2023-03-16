@@ -1,2 +1,34 @@
 # Mikrotik-Switch
 Turn your Mikrotik router in to a switch .
+
+- 1. Reset the board with option No default configuration.
+
+- 2. Login with WinBox with MAC address .
+
+- 3. Open terminal Set new password
+
+- 4. Paste this script 
+```bash
+/interface bridge
+add name=bridge1
+/interface wireless security-profiles
+set [ find default=yes ] supplicant-identity=MikroTik
+add authentication-types=wpa2-psk eap-methods="" management-protection=\
+    allowed mode=dynamic-keys name="NoobMaster" supplicant-identity="" \
+    wpa2-pre-shared-key=nymurbd
+/interface wireless
+set [ find default-name=wlan1 ] band=2ghz-b/g/n channel-width=20/40mhz-Ce \
+    disabled=no frequency=auto mode=ap-bridge security-profile=\
+    "NoobMaster" ssid="NYMUR_OFFICIAL" wireless-protocol=802.11
+/interface bridge port
+add bridge=bridge1 interface=wlan1
+add bridge=bridge1 interface=ether1
+add bridge=bridge1 interface=ether2
+add bridge=bridge1 interface=ether3
+add bridge=bridge1 interface=ether4
+/ip dhcp-client
+add dhcp-options=hostname,clientid disabled=no interface=bridge1
+/system identity
+set name=APxxx
+```
+- 5. Boom your Mikrotik redy to use for switch .
